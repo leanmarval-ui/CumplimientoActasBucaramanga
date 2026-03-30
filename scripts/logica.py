@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from datetime import timedelta
-from parametros import festivos, mapa_dias, MES
+from parametros import festivos, mapa_dias, MES, ANIO
 
 # =========================
 # LIMPIEZA
@@ -66,7 +66,9 @@ def contar_fechas(valor):
     return len([x for x in str(valor).split(",") if x.strip() != ""])
 
 def contar_fechas_y_dividir(valor):
-    return contar_fechas(valor) // 2
+    if pd.isna(valor) or valor == "":
+        return 0
+    return len([x for x in str(valor).split(",") if x.strip() != ""]) / 2
 
 # =========================
 # COINCIDENCIAS
@@ -104,7 +106,7 @@ def procesar_todo(df_proyectos, df_intermedia, df_semanal, fechas_mes):
 
     df_proyectos["ConteoIntermedia"] = df_proyectos["PosibleIntermedia"].apply(contar_fechas_y_dividir)
     df_proyectos["ConteoSemanal"] = df_proyectos["PosibleSemanal"].apply(contar_fechas_y_dividir)
-
+   
     # =========================
     # DETECTAR COLUMNA DE FECHA
     # =========================
@@ -114,6 +116,19 @@ def procesar_todo(df_proyectos, df_intermedia, df_semanal, fechas_mes):
     # NORMALIZAR
     df_intermedia[col_fecha_intermedia] = pd.to_datetime(df_intermedia[col_fecha_intermedia]).dt.normalize()
     df_semanal[col_fecha_semanal] = pd.to_datetime(df_semanal[col_fecha_semanal]).dt.normalize()
+
+    # =========================
+    # FILTRAR SOLO MES ANALIZADO
+    # =========================
+    df_intermedia = df_intermedia[
+        (df_intermedia[col_fecha_intermedia].dt.year == ANIO) &
+        (df_intermedia[col_fecha_intermedia].dt.month == MES)
+    ]
+
+    df_semanal = df_semanal[
+        (df_semanal[col_fecha_semanal].dt.year == ANIO) &
+        (df_semanal[col_fecha_semanal].dt.month == MES)
+    ]
 
     # ELIMINAR DUPLICADOS (MISMO DIA)
     df_intermedia = df_intermedia.drop_duplicates(subset=["Proyecto", col_fecha_intermedia])
@@ -131,36 +146,43 @@ def procesar_todo(df_proyectos, df_intermedia, df_semanal, fechas_mes):
     df_intermedia_group.rename(columns={col_fecha_intermedia: "RealIntermedia"}, inplace=True)
     df_semanal_group.rename(columns={col_fecha_semanal: "RealSemanal"}, inplace=True)
 
-    # MERGE
-    comparacion = df_proyectos.merge(df_intermedia_group, on="Proyecto", how="left")
-    comparacion = comparacion.merge(df_semanal_group, on="Proyecto", how="left")
+    # =========================
+    # MERGE PRINCIPAL (ESTE ES TU EXCEL GRANDE)
+    # =========================
+    df_detallado = df_proyectos.merge(df_intermedia_group, on="Proyecto", how="left")
+    df_detallado = df_detallado.merge(df_semanal_group, on="Proyecto", how="left")
 
     # COINCIDENCIAS
-    comparacion["CoincidenciasIntermedia"] = comparacion.apply(
+    df_detallado["CoincidenciasIntermedia"] = df_detallado.apply(
         lambda row: coincidencias_inteligente(row["PosibleIntermedia"], row["RealIntermedia"]), axis=1
     )
 
-    comparacion["CoincidenciasSemanal"] = comparacion.apply(
+    df_detallado["CoincidenciasSemanal"] = df_detallado.apply(
         lambda row: coincidencias_inteligente(row["PosibleSemanal"], row["RealSemanal"]), axis=1
     )
 
-    comparacion["ConteoCoincidenciasIntermedia"] = comparacion["CoincidenciasIntermedia"].apply(contar_fechas)
-    comparacion["ConteoCoincidenciasSemanal"] = comparacion["CoincidenciasSemanal"].apply(contar_fechas)
+    df_detallado["ConteoCoincidenciasIntermedia"] = df_detallado["CoincidenciasIntermedia"].apply(contar_fechas)
+    df_detallado["ConteoCoincidenciasSemanal"] = df_detallado["CoincidenciasSemanal"].apply(contar_fechas)
 
     # CUMPLIMIENTO
-    comparacion["CumplimientoIntermedia"] = np.where(
-        comparacion["ConteoIntermedia"] == 0,
+    df_detallado["CumplimientoIntermedia"] = np.where(
+        df_detallado["ConteoIntermedia"] == 0,
         0,
-        comparacion["ConteoCoincidenciasIntermedia"] / comparacion["ConteoIntermedia"]
+        df_detallado["ConteoCoincidenciasIntermedia"] / df_detallado["ConteoIntermedia"]
     )
 
-    comparacion["CumplimientoSemanal"] = np.where(
-        comparacion["ConteoSemanal"] == 0,
+    df_detallado["CumplimientoSemanal"] = np.where(
+        df_detallado["ConteoSemanal"] == 0,
         0,
-        comparacion["ConteoCoincidenciasSemanal"] / comparacion["ConteoSemanal"]
+        df_detallado["ConteoCoincidenciasSemanal"] / df_detallado["ConteoSemanal"]
     )
 
-    comparacion["CumplimientoIntermedia"] = comparacion["CumplimientoIntermedia"].clip(upper=1)
-    comparacion["CumplimientoSemanal"] = comparacion["CumplimientoSemanal"].clip(upper=1)
+    df_detallado["CumplimientoIntermedia"] = df_detallado["CumplimientoIntermedia"].clip(upper=1)
+    df_detallado["CumplimientoSemanal"] = df_detallado["CumplimientoSemanal"].clip(upper=1)
 
-    return comparacion
+    # =========================
+    # RESUMEN (EL QUE YA TENÍAS)
+    # =========================
+    comparacion = df_detallado.copy()
+
+    return comparacion, df_detallado
