@@ -112,17 +112,22 @@ def coincidencias_por_semana(lista_teorica, lista_real):
     # 👇 evaluar cada semana
     for semana, fechas_teoricas in semanas.items():
 
-        match_encontrado = False
+    match_encontrado = False
 
-        for t in fechas_teoricas:
-            for r in reales:
-                if 0 <= (r - t).days <= 2:
-                    coincidencias.append(t)
-                    match_encontrado = True
-                    break
+    # 🔥 ordenar fechas de la semana
+    fechas_teoricas = sorted(fechas_teoricas)
 
-            if match_encontrado:
-                break
+    inicio = fechas_teoricas[0]
+    fin = fechas_teoricas[-1]
+
+    # 🔥 calcular holgura desde el cierre
+    holgura = siguiente_habil(fin)
+
+    for r in reales:
+        if inicio <= r <= holgura:
+            coincidencias.append(fin)  # 👈 recomendado usar fin
+            match_encontrado = True
+            break
 
     return ", ".join([f.strftime("%Y-%m-%d") for f in coincidencias])
 # =========================
