@@ -45,17 +45,29 @@ def calcular_posibles(dia_base, fechas_mes):
     posibles = []
 
     for fecha in fechas_mes:
+        fecha = pd.to_datetime(fecha).normalize()
+
+        # 👇 SOLO entra si es el día base (ej: martes)
         if fecha.weekday() == numero_dia:
+
+            # ❌ SI ES FESTIVO → NO usar ese día, mover lógica
             if fecha in festivos:
-                posibles.extend(obtener_dos_siguientes(fecha))
-            else:
-                posibles.append(fecha)
+                # 👇 buscas los siguientes días hábiles (reemplaza la reunión)
                 siguiente = siguiente_habil(fecha)
                 if siguiente.month == MES:
                     posibles.append(siguiente)
 
-    posibles = sorted(set(posibles))
-    return ", ".join([f.strftime("%Y-%m-%d") for f in posibles])
+                    siguiente_2 = siguiente_habil(siguiente)
+                    if siguiente_2.month == MES:
+                        posibles.append(siguiente_2)
+
+            # ✅ SI NO ES FESTIVO
+            else:
+                posibles.append(fecha)
+
+                siguiente = siguiente_habil(fecha)
+                if siguiente.month == MES:
+                    posibles.append(siguiente)
 
 # =========================
 # CONTEOS
