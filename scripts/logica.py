@@ -73,19 +73,23 @@ def contar_fechas_y_dividir(valor):
 # =========================
 # COINCIDENCIAS
 # =========================
-def coincidencias_inteligente(lista1, lista2):
-    if pd.isna(lista1) or pd.isna(lista2):
+def coincidencias_inteligente(lista_teorica, lista_real):
+    if pd.isna(lista_teorica) or pd.isna(lista_real):
         return ""
 
-    fechas1 = sorted(set(pd.to_datetime(x.strip()).normalize() for x in str(lista1).split(",") if x.strip()))
-    fechas2 = sorted(set(pd.to_datetime(x.strip()).normalize() for x in str(lista2).split(",") if x.strip()))
+    teoricas = sorted(set(pd.to_datetime(x.strip()).normalize() for x in str(lista_teorica).split(",") if x.strip()))
+    reales = sorted(set(pd.to_datetime(x.strip()).normalize() for x in str(lista_real).split(",") if x.strip()))
 
+    usadas = set()
     coincidencias = []
 
-    for f2 in fechas2:
-        for f1 in fechas1:
-            if f2 == f1 or f2 == f1 + pd.Timedelta(days=1):
-                coincidencias.append(f1)
+    for t in teoricas:
+        for r in reales:
+            if r in usadas:
+                continue
+            if 0 <= (r - t).days <= 2:
+                coincidencias.append(t)
+                usadas.add(r)
                 break
 
     return ", ".join([f.strftime("%Y-%m-%d") for f in coincidencias])
@@ -94,6 +98,11 @@ def coincidencias_inteligente(lista1, lista2):
 # PROCESO PRINCIPAL
 # =========================
 def procesar_todo(df_proyectos, df_intermedia, df_semanal, fechas_mes):
+
+    # 🔥 LIMPIAR NOMBRES (AQUÍ)
+    df_proyectos["Proyecto"] = df_proyectos["Proyecto"].apply(limpiar_texto)
+    df_intermedia["Proyecto"] = df_intermedia["Proyecto"].apply(limpiar_texto)
+    df_semanal["Proyecto"] = df_semanal["Proyecto"].apply(limpiar_texto)
 
     # CALENDARIO TEORICO
     df_proyectos["PosibleIntermedia"] = df_proyectos["DiaIntermedia"].apply(
@@ -104,8 +113,8 @@ def procesar_todo(df_proyectos, df_intermedia, df_semanal, fechas_mes):
         lambda x: calcular_posibles(x, fechas_mes)
     )
 
-    df_proyectos["ConteoIntermedia"] = df_proyectos["PosibleIntermedia"].apply(contar_fechas_y_dividir)
-    df_proyectos["ConteoSemanal"] = df_proyectos["PosibleSemanal"].apply(contar_fechas_y_dividir)
+    df_proyectos["ConteoIntermedia"] = df_proyectos["PosibleIntermedia"].apply(lambda x: contar_fechas(x) / 2)
+    df_proyectos["ConteoSemanal"] = df_proyectos["PosibleSemanal"].apply(lambda x: contar_fechas(x) / 2)
    
     # =========================
     # DETECTAR COLUMNA DE FECHA
