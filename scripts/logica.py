@@ -92,40 +92,35 @@ def coincidencias_por_semana(lista_teorica, lista_real):
     if pd.isna(lista_teorica) or pd.isna(lista_real):
         return ""
 
-    teoricas = sorted(set(pd.to_datetime(x.strip()).normalize() for x in str(lista_teorica).split(",") if x.strip()))
-    reales = sorted(set(pd.to_datetime(x.strip()).normalize() for x in str(lista_real).split(",") if x.strip()))
+    teoricas = sorted(set(pd.to_datetime(x.strip()).normalize()
+                    for x in str(lista_teorica).split(",") if x.strip()))
+
+    reales = sorted(set(pd.to_datetime(x.strip()).normalize()
+                  for x in str(lista_real).split(",") if x.strip()))
 
     coincidencias = []
 
-    # 👇 agrupar teoricas por semana
-    semanas = {}
+    # 👇 recorrer en pares (inicio, fin)
+    for i in range(0, len(teoricas), 2):
 
-    for t in teoricas:
-        year, week, _ = t.isocalendar()
-        clave = (year, week)
+        try:
+            inicio = teoricas[i]
+            fin = teoricas[i + 1]
+        except IndexError:
+            continue
 
-        if clave not in semanas:
-            semanas[clave] = []
+        # 👇 holgura = día siguiente al cierre
+        holgura = fin + timedelta(days=1)
 
-        semanas[clave].append(t)
-
-    # 👇 NUEVA LÓGICA (AQUÍ VA LO TUYO BIEN INDENTADO)
-    for semana, fechas_teoricas in semanas.items():
-
-        match_encontrado = False
-
-        fechas_teoricas = sorted(fechas_teoricas)
-
-        inicio = fechas_teoricas[0]
-        fin = fechas_teoricas[-1]
-
-        holgura = siguiente_habil(fin)
-
+        # 👇 buscar match en ese rango
+        match = None
         for r in reales:
             if inicio <= r <= holgura:
-                coincidencias.append(fin)
-                match_encontrado = True
+                match = r
                 break
+
+        if match:
+            coincidencias.append(match)
 
     return ", ".join([f.strftime("%Y-%m-%d") for f in coincidencias])
 # =========================
