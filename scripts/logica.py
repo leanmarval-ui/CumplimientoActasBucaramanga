@@ -194,11 +194,11 @@ def procesar_todo(df_proyectos, df_intermedia, df_semanal, fechas_mes):
 
     # COINCIDENCIAS
     df_detallado["CoincidenciasIntermedia"] = df_detallado.apply(
-        lambda row: coincidencias_inteligente(row["PosibleIntermedia"], row["RealIntermedia"]), axis=1
+    lambda row: coincidencias_por_semana(row["PosibleIntermedia"], row["RealIntermedia"]), axis=1
     )
 
-    df_detallado["CoincidenciasSemanal"] = df_detallado.apply(
-        lambda row: coincidencias_inteligente(row["PosibleSemanal"], row["RealSemanal"]), axis=1
+    df_detallado["CoincidenciasIntermedia"] = df_detallado.apply(
+    lambda row: coincidencias_por_semana(row["PosibleIntermedia"], row["RealIntermedia"]), axis=1
     )
 
     df_detallado["ConteoCoincidenciasIntermedia"] = df_detallado["CoincidenciasIntermedia"].apply(contar_fechas)
