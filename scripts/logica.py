@@ -88,27 +88,43 @@ def contar_fechas_y_dividir(valor):
 # =========================
 # COINCIDENCIAS
 # =========================
-def coincidencias_inteligente(lista_teorica, lista_real):
+def coincidencias_por_semana(lista_teorica, lista_real):
     if pd.isna(lista_teorica) or pd.isna(lista_real):
         return ""
 
     teoricas = sorted(set(pd.to_datetime(x.strip()).normalize() for x in str(lista_teorica).split(",") if x.strip()))
     reales = sorted(set(pd.to_datetime(x.strip()).normalize() for x in str(lista_real).split(",") if x.strip()))
 
-    usadas = set()
     coincidencias = []
 
+    # 👇 agrupar teoricas por semana
+    semanas = {}
+
     for t in teoricas:
-        for r in reales:
-            if r in usadas:
-                continue
-            if 0 <= (r - t).days <= 2:
-                coincidencias.append(t)
-                usadas.add(r)
+        year, week, _ = t.isocalendar()
+        clave = (year, week)
+
+        if clave not in semanas:
+            semanas[clave] = []
+
+        semanas[clave].append(t)
+
+    # 👇 evaluar cada semana
+    for semana, fechas_teoricas in semanas.items():
+
+        match_encontrado = False
+
+        for t in fechas_teoricas:
+            for r in reales:
+                if 0 <= (r - t).days <= 2:
+                    coincidencias.append(t)
+                    match_encontrado = True
+                    break
+
+            if match_encontrado:
                 break
 
     return ", ".join([f.strftime("%Y-%m-%d") for f in coincidencias])
-
 # =========================
 # PROCESO PRINCIPAL
 # =========================
