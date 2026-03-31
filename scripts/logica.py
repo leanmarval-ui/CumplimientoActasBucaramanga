@@ -69,6 +69,9 @@ def calcular_posibles(dia_base, fechas_mes):
                 if siguiente.month == MES:
                     posibles.append(siguiente)
 
+    posibles = sorted(set(posibles))
+    return ", ".join([f.strftime("%Y-%m-%d") for f in posibles])
+
 # =========================
 # CONTEOS
 # =========================
