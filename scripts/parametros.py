@@ -12,7 +12,7 @@ ANIO = 2026
 MES = 3
 
 festivos = [
-"2026-03-16"
+"2026-03-23"
 ]
 
 festivos = [pd.to_datetime(f) for f in festivos]
