@@ -15,7 +15,7 @@ festivos = [
 "2026-03-23", "2026-03-30", "2026-03-31"
 ]
 
-festivos = [pd.to_datetime(f) for f in festivos]
+festivos = set(pd.to_datetime(f).normalize() for f in festivos)
 
 # MAPA DIAS
 mapa_dias = {
