@@ -92,6 +92,7 @@ def generar_grafico(comparacion):
             ha="left",
             fontsize=8,
             color="white"
+            fontweight="bold"
         )
 
     for bar in bars2:
@@ -103,6 +104,7 @@ def generar_grafico(comparacion):
             ha="left",
             fontsize=8,
             color="white"
+            fontweight="bold"
         )
 
     # =========================
