@@ -91,7 +91,7 @@ def generar_grafico(comparacion):
             va="center",
             ha="left",
             fontsize=8,
-            color="white"
+            color="white",
             fontweight="bold"
         )
 
@@ -103,7 +103,7 @@ def generar_grafico(comparacion):
             va="center",
             ha="left",
             fontsize=8,
-            color="white"
+            color="white",
             fontweight="bold"
         )
 
