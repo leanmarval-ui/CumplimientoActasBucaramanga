@@ -1,10 +1,33 @@
 import pandas as pd
 
-# Leer el archivo
+# Leer archivo
 df = pd.read_excel("output/calendario_comparado.xlsx")
 
-print("Columnas del archivo:")
-print(df.columns)
+# =========================
+# SELECCIÓN DE COLUMNAS
+# =========================
+
+df_resumen = df[[
+    "Sucursal",
+    "Proyecto",
+
+    "DiaIntermedia",
+    "PosibleIntermedia",
+    "RealIntermedia",
+    "CoincidenciasIntermedia",
+    "ConteoCoincidenciasIntermedia",
+    "CumplimientoIntermedia",
+
+    "DiaSemanal",
+    "PosibleSemanal",
+    "RealSemanal",
+    "CoincidenciasSemanal",
+    "ConteoCoincidenciasSemanal",
+    "CumplimientoSemanal"
+]]
+
+print("Columnas filtradas:")
+print(df_resumen.columns)
 
 print("\nPrimeras filas:")
-print(df.head())
+print(df_resumen.head())
