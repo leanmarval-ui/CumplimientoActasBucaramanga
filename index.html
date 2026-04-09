@@ -3,75 +3,149 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Cumplimiento de Actas</title>
+<title>Dashboard Cumplimiento</title>
 
 <style>
     body {
         font-family: Arial, sans-serif;
-        background-color: #f4f6f8;
         margin: 0;
+        background-color: #f4f6f8;
+    }
+
+    /* SPLASH */
+    #splash {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: #2c3e50;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 28px;
+        z-index: 999;
+    }
+
+    .contenido {
         padding: 20px;
+        display: none;
     }
 
     h1 {
         text-align: center;
-        color: #333;
-        margin-bottom: 40px;
     }
 
+    /* BOTONES */
+    .filtros {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    button {
+        margin: 5px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #3498db;
+        color: white;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
+
+    /* CARDS */
     .grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        gap: 30px;
+        gap: 20px;
     }
 
     .card {
         background: white;
-        padding: 15px;
+        padding: 10px;
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    h2 {
         text-align: center;
-        color: #444;
     }
 
     img {
         width: 100%;
-        margin-top: 10px;
         border-radius: 8px;
     }
 </style>
-
 </head>
+
 <body>
+
+<!-- SPLASH -->
+<div id="splash">
+    🚀 Bienvenido al Dashboard de Cumplimiento
+</div>
+
+<div class="contenido" id="contenido">
 
 <h1>📊 Cumplimiento de Actas - Marzo 2026</h1>
 
+<div class="filtros">
+    <button onclick="filtrar('todas')">Todas</button>
+    <button onclick="filtrar('bogota')">Bogotá</button>
+    <button onclick="filtrar('bucaramanga')">Bucaramanga</button>
+    <button onclick="filtrar('costa')">Costa</button>
+    <button onclick="filtrar('cali')">Cali</button>
+</div>
+
 <div class="grid">
 
-    <div class="card">
+    <div class="card bogota">
         <h2>Bogotá</h2>
         <img src="https://leanmarval-ui.github.io/CumplimientoActasBogota/output/grafico.png">
     </div>
 
-    <div class="card">
+    <div class="card bucaramanga">
         <h2>Bucaramanga</h2>
         <img src="https://leanmarval-ui.github.io/CumplimientoActasBucaramanga/output/grafico.png">
     </div>
 
-    <div class="card">
+    <div class="card costa">
         <h2>Costa</h2>
         <img src="https://leanmarval-ui.github.io/CumplimientoActasCosta/output/grafico.png">
     </div>
 
-    <div class="card">
+    <div class="card cali">
         <h2>Cali</h2>
         <img src="https://leanmarval-ui.github.io/CumplimientoActasCali/output/grafico.png">
     </div>
 
 </div>
+
+</div>
+
+<script>
+    // SPLASH
+    setTimeout(() => {
+        document.getElementById("splash").style.display = "none";
+        document.getElementById("contenido").style.display = "block";
+    }, 2000);
+
+    // FILTRO
+    function filtrar(sucursal) {
+        let cards = document.querySelectorAll(".card");
+
+        cards.forEach(card => {
+            if (sucursal === "todas") {
+                card.style.display = "block";
+            } else {
+                if (card.classList.contains(sucursal)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            }
+        });
+    }
+</script>
 
 </body>
 </html>
