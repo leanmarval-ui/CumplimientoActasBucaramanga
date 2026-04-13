@@ -35,26 +35,6 @@
         text-align: center;
     }
 
-    /* BOTONES */
-    .filtros {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    button {
-        margin: 5px;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        background-color: #3498db;
-        color: white;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background-color: #2980b9;
-    }
-
     /* CARDS */
     .grid {
         display: grid;
@@ -74,6 +54,26 @@
         width: 100%;
         border-radius: 8px;
     }
+
+    /* TABLA */
+    table {
+        margin: auto;
+        border-collapse: collapse;
+        background: white;
+        width: 90%;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    th {
+        background: #2c3e50;
+        color: white;
+        padding: 8px;
+    }
+
+    td {
+        padding: 6px;
+        text-align: center;
+    }
 </style>
 </head>
 
@@ -88,20 +88,15 @@
 
 <h1>📊 Cumplimiento de Actas - Marzo 2026</h1>
 
-<div class="filtros">
-   
-    <button onclick="filtrar('bucaramanga')">Bucaramanga</button>
-   
-</div>
-
 <div class="grid">
-
-
-    <div class="card bucaramanga">
+    <div class="card">
         <h2>Bucaramanga</h2>
         <img src="https://leanmarval-ui.github.io/CumplimientoActasBucaramanga/output/grafico.png">
     </div>
+</div>
 
+<!-- TABLA -->
+<div id="tabla-container" style="margin-top:40px;"></div>
 
 </div>
 
@@ -111,23 +106,56 @@
         document.getElementById("splash").style.display = "none";
         document.getElementById("contenido").style.display = "block";
     }, 2000);
+</script>
 
-    // FILTRO
-    function filtrar(sucursal) {
-        let cards = document.querySelectorAll(".card");
+<script>
+fetch('https://leanmarval-ui.github.io/CumplimientoActasBucaramanga/output/detalle.json')
+    .then(response => response.json())
+    .then(data => {
 
-        cards.forEach(card => {
-            if (sucursal === "todas") {
-                card.style.display = "block";
-            } else {
-                if (card.classList.contains(sucursal)) {
-                    card.style.display = "block";
-                } else {
-                    card.style.display = "none";
-                }
-            }
+        let filtrado = data.filter(d => d.sucursal === "Bucaramanga");
+
+        let html = `
+        <table>
+            <tr>
+                <th>Proyecto</th>
+                <th>Tipo</th>
+                <th>Día</th>
+                <th>Posible</th>
+                <th>Real</th>
+                <th>Coincidencias</th>
+                <th>Conteo</th>
+                <th>Cumplimiento</th>
+            </tr>
+        `;
+
+        filtrado.forEach(row => {
+            let valor = row.cumplimiento * 100;
+            let color = valor >= 90 ? "#27ae60" : valor >= 80 ? "#f1c40f" : "#c0392b";
+
+            html += `
+            <tr>
+                <td>${row.proyecto}</td>
+                <td>${row.tipo}</td>
+                <td>${row.dia}</td>
+                <td>${row.posible}</td>
+                <td>${row.real}</td>
+                <td>${row.coincidencias}</td>
+                <td>${row.conteo}</td>
+                <td style="color:${color}; font-weight:bold;">
+                    ${valor.toFixed(0)}%
+                </td>
+            </tr>
+            `;
         });
-    }
+
+        html += "</table>";
+
+        document.getElementById("tabla-container").innerHTML = html;
+    })
+    .catch(error => {
+        console.error("Error cargando JSON:", error);
+    });
 </script>
 
 </body>
