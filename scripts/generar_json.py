@@ -1,12 +1,11 @@
 import pandas as pd
 
-# Leer archivo
+# Leer archivo generado por main.py
 df = pd.read_excel("output/calendario_comparado.xlsx")
 
 # =========================
-# SELECCIÓN DE COLUMNAS
+# FILTRAR COLUMNAS
 # =========================
-
 df_resumen = df[[
     "Sucursal",
     "Proyecto",
@@ -26,8 +25,9 @@ df_resumen = df[[
     "CumplimientoSemanal"
 ]]
 
-print("Columnas filtradas:")
-print(df_resumen.columns)
+# =========================
+# GUARDAR NUEVO EXCEL
+# =========================
+df_resumen.to_excel("output/resumen_filtrado.xlsx", index=False)
 
-print("\nPrimeras filas:")
-print(df_resumen.head())
+print("✅ Archivo resumen_filtrado.xlsx generado")
