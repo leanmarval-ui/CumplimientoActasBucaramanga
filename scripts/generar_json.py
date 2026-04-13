@@ -46,7 +46,7 @@ for _, row in df_resumen.iterrows():
 
     # INTERMEDIA
     data.append({
-        "sucursal": row["Sucursal"],
+        "sucursal": str(row["Sucursal"]).strip().lower(),
         "proyecto": row["Proyecto"],
         "tipo": "Intermedia",
         "dia": row["DiaIntermedia"],
@@ -59,7 +59,7 @@ for _, row in df_resumen.iterrows():
 
     # SEMANAL
     data.append({
-        "sucursal": row["Sucursal"],
+        "sucursal": str(row["Sucursal"]).strip().lower(),
         "proyecto": row["Proyecto"],
         "tipo": "Semanal",
         "dia": row["DiaSemanal"],
