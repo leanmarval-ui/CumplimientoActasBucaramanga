@@ -165,6 +165,26 @@ fetch('https://leanmarval-ui.github.io/CumplimientoActasBucaramanga/output/detal
 
     datosGlobal = data.filter(d => d.sucursal === "bucaramanga");
 
+    // 🔥 LLENAR DESPLEGABLE
+    let proyectosUnicos = [...new Set(datosGlobal.map(d => d.proyecto))];
+    let opciones = proyectosUnicos.map(p => `<option value="${p}">`).join("");
+    document.getElementById("listaProyectos").innerHTML = opciones;
+
+    let buscador = document.getElementById("buscador");
+
+    buscador.addEventListener("input", filtrarTabla);
+    buscador.addEventListener("change", filtrarTabla);
+
+    function filtrarTabla(){
+        let texto = buscador.value.toLowerCase();
+
+        let filtrado = datosGlobal.filter(d =>
+            d.proyecto.toLowerCase().includes(texto)
+        );
+
+        renderTabla(filtrado);
+    }
+
     generarKPIs(datosGlobal);
     renderTabla(datosGlobal);
 });
