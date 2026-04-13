@@ -113,7 +113,9 @@ fetch('https://leanmarval-ui.github.io/CumplimientoActasBucaramanga/output/detal
     .then(response => response.json())
     .then(data => {
 
-        let filtrado = data.filter(d => d.sucursal === "Bucaramanga");
+        let filtrado = data.filter(d => 
+    d.sucursal.toLowerCase().trim() === "bucaramanga"
+        );
 
         let html = `
         <table>
