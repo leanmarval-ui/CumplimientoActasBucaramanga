@@ -43,13 +43,19 @@
     }
 
     .kpi {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        width: 200px;
-        margin: 10px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 200px;
+    margin: 10px;
+    }
+
+    /* 🎨 COLORES KPI */
+    .kpi:nth-child(2) { border-top: 5px solid #27ae60; } /* verde */
+    .kpi:nth-child(3) { border-top: 5px solid #f1c40f; } /* amarillo */
+    .kpi:nth-child(4) { border-top: 5px solid #c0392b; } /* rojo */
     }
 
     .kpi h2 {
@@ -170,22 +176,30 @@ function generarKPIs(data){
     let promedio = cumplimientos.reduce((a,b)=>a+b,0)/cumplimientos.length;
 
     let verdes = cumplimientos.filter(v => v >= 90).length;
+    let amarillos = cumplimientos.filter(v => v >= 80 && v < 90).length;
     let rojos = cumplimientos.filter(v => v < 80).length;
 
-    document.getElementById("kpis").innerHTML = `
-        <div class="kpi">
-            <h2>${promedio.toFixed(0)}%</h2>
-            <p>Promedio</p>
-        </div>
-        <div class="kpi">
-            <h2>${verdes}</h2>
-            <p>En verde</p>
-        </div>
-        <div class="kpi">
-            <h2>${rojos}</h2>
-            <p>En rojo</p>
-        </div>
-    `;
+   document.getElementById("kpis").innerHTML = `
+    <div class="kpi">
+        <h2>${promedio.toFixed(0)}%</h2>
+        <p>Promedio</p>
+    </div>
+
+    <div class="kpi">
+        <h2>${verdes}</h2>
+        <p>Cumplimiento Óptimo (≥90%)</p>
+    </div>
+
+    <div class="kpi">
+        <h2>${amarillos}</h2>
+        <p>Cumplimiento Medio (80–89%)</p>
+    </div>
+
+    <div class="kpi">
+        <h2>${rojos}</h2>
+        <p>Cumplimiento Crítico (&lt;80%)</p>
+    </div>
+`;
 }
 
 // ================= TABLA =================
