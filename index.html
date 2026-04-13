@@ -12,7 +12,6 @@
         background-color: #f4f6f8;
     }
 
-    /* SPLASH */
     #splash {
         position: fixed;
         width: 100%;
@@ -35,24 +34,60 @@
         text-align: center;
     }
 
-    /* CARDS */
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        gap: 20px;
+    /* KPI */
+    .kpi-container {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+        flex-wrap: wrap;
     }
 
+    .kpi {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        width: 200px;
+        margin: 10px;
+    }
+
+    .kpi h2 {
+        margin: 0;
+        font-size: 28px;
+    }
+
+    .kpi p {
+        margin: 5px 0 0;
+        color: #666;
+    }
+
+    /* BUSCADOR */
+    .buscador {
+        text-align: center;
+        margin: 20px;
+    }
+
+    input {
+        padding: 10px;
+        width: 300px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    /* CARD */
     .card {
         background: white;
         padding: 10px;
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         text-align: center;
+        max-width: 800px;
+        margin: auto;
     }
 
     img {
         width: 100%;
-        border-radius: 8px;
     }
 
     /* TABLA */
@@ -60,39 +95,45 @@
         margin: auto;
         border-collapse: collapse;
         background: white;
-        width: 90%;
+        width: 95%;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
     th {
         background: #2c3e50;
         color: white;
-        padding: 8px;
+        padding: 10px;
     }
 
     td {
-        padding: 6px;
+        padding: 8px;
         text-align: center;
     }
+
 </style>
 </head>
 
 <body>
 
-<!-- SPLASH -->
 <div id="splash">
-    🚀 Bienvenido al Dashboard de Cumplimiento
+    🚀 Cargando Dashboard...
 </div>
 
 <div class="contenido" id="contenido">
 
-<h1>📊 Cumplimiento de Actas - Marzo 2026</h1>
+<h1>📊 Cumplimiento de Actas - Bucaramanga</h1>
 
-<div class="grid">
-    <div class="card">
-        <h2>Bucaramanga</h2>
-        <img src="https://leanmarval-ui.github.io/CumplimientoActasBucaramanga/output/grafico.png">
-    </div>
+<!-- KPI -->
+<div class="kpi-container" id="kpis"></div>
+
+<!-- BUSCADOR -->
+<div class="buscador">
+    <input type="text" id="buscador" placeholder="Buscar proyecto...">
+</div>
+
+<!-- GRAFICA -->
+<div class="card">
+    <img src="https://leanmarval-ui.github.io/CumplimientoActasBucaramanga/output/grafico.png">
 </div>
 
 <!-- TABLA -->
@@ -101,63 +142,106 @@
 </div>
 
 <script>
-    // SPLASH
-    setTimeout(() => {
-        document.getElementById("splash").style.display = "none";
-        document.getElementById("contenido").style.display = "block";
-    }, 2000);
+setTimeout(() => {
+    document.getElementById("splash").style.display = "none";
+    document.getElementById("contenido").style.display = "block";
+}, 1500);
 </script>
 
 <script>
+
+let datosGlobal = [];
+
 fetch('https://leanmarval-ui.github.io/CumplimientoActasBucaramanga/output/detalle.json')
-    .then(response => response.json())
-    .then(data => {
+.then(res => res.json())
+.then(data => {
 
-        let filtrado = data.filter(d => 
-    d.sucursal.toLowerCase().trim() === "bucaramanga"
-        );
+    datosGlobal = data.filter(d => d.sucursal === "bucaramanga");
 
-        let html = `
-        <table>
-            <tr>
-                <th>Proyecto</th>
-                <th>Tipo</th>
-                <th>Día</th>
-                <th>Posible</th>
-                <th>Real</th>
-                <th>Coincidencias</th>
-                <th>Conteo</th>
-                <th>Cumplimiento</th>
-            </tr>
+    generarKPIs(datosGlobal);
+    renderTabla(datosGlobal);
+});
+
+// ================= KPI =================
+function generarKPIs(data){
+
+    let cumplimientos = data.map(d => d.cumplimiento * 100);
+
+    let promedio = cumplimientos.reduce((a,b)=>a+b,0)/cumplimientos.length;
+
+    let verdes = cumplimientos.filter(v => v >= 90).length;
+    let rojos = cumplimientos.filter(v => v < 80).length;
+
+    document.getElementById("kpis").innerHTML = `
+        <div class="kpi">
+            <h2>${promedio.toFixed(0)}%</h2>
+            <p>Promedio</p>
+        </div>
+        <div class="kpi">
+            <h2>${verdes}</h2>
+            <p>En verde</p>
+        </div>
+        <div class="kpi">
+            <h2>${rojos}</h2>
+            <p>En rojo</p>
+        </div>
+    `;
+}
+
+// ================= TABLA =================
+function renderTabla(data){
+
+    // ORDENAR (peor primero)
+    data.sort((a,b)=> a.cumplimiento - b.cumplimiento);
+
+    let html = `
+    <table>
+        <tr>
+            <th>Proyecto</th>
+            <th>Tipo</th>
+            <th>Día</th>
+            <th>Posible</th>
+            <th>Real</th>
+            <th>Cumplimiento</th>
+        </tr>
+    `;
+
+    data.forEach(row => {
+
+        let valor = row.cumplimiento * 100;
+        let color = valor >= 90 ? "#27ae60" : valor >= 80 ? "#f1c40f" : "#c0392b";
+
+        html += `
+        <tr style="background:${valor<80?'#fdecea':valor<90?'#fef9e7':'#eafaf1'}">
+            <td>${row.proyecto}</td>
+            <td>${row.tipo}</td>
+            <td>${row.dia}</td>
+            <td>${row.posible}</td>
+            <td>${row.real}</td>
+            <td style="color:${color}; font-weight:bold;">
+                ${valor.toFixed(0)}%
+            </td>
+        </tr>
         `;
-
-        filtrado.forEach(row => {
-            let valor = row.cumplimiento * 100;
-            let color = valor >= 90 ? "#27ae60" : valor >= 80 ? "#f1c40f" : "#c0392b";
-
-            html += `
-            <tr>
-                <td>${row.proyecto}</td>
-                <td>${row.tipo}</td>
-                <td>${row.dia}</td>
-                <td>${row.posible}</td>
-                <td>${row.real}</td>
-                <td>${row.coincidencias}</td>
-                <td>${row.conteo}</td>
-                <td style="color:${color}; font-weight:bold;">
-                    ${valor.toFixed(0)}%
-                </td>
-            </tr>
-            `;
-        });
-
-        html += "</table>";
-
-        document.getElementById("tabla-container").innerHTML = html;
-    })
-    .catch(error => {
-        console.error("Error cargando JSON:", error);
     });
+
+    html += "</table>";
+
+    document.getElementById("tabla-container").innerHTML = html;
+}
+
+// ================= BUSCADOR =================
+document.getElementById("buscador").addEventListener("input", function(){
+
+    let texto = this.value.toLowerCase();
+
+    let filtrado = datosGlobal.filter(d =>
+        d.proyecto.toLowerCase().includes(texto)
+    );
+
+    renderTabla(filtrado);
+});
+
 </script>
 
 </body>
