@@ -209,16 +209,18 @@ function renderTabla(data){
     data.sort((a,b)=> a.cumplimiento - b.cumplimiento);
 
     let html = `
-    <table>
-        <tr>
-            <th>Proyecto</th>
-            <th>Tipo</th>
-            <th>Día</th>
-            <th>Posible</th>
-            <th>Real</th>
-            <th>Cumplimiento</th>
-        </tr>
-    `;
+<table>
+    <tr>
+        <th>Proyecto</th>
+        <th>Tipo</th>
+        <th>Día</th>
+        <th>Posible</th>
+        <th>Real</th>
+        <th>Coincidencias</th>
+        <th># Coincidencias</th>
+        <th>Cumplimiento</th>
+    </tr>
+`;
 
     data.forEach(row => {
 
@@ -232,6 +234,8 @@ function renderTabla(data){
             <td>${row.dia}</td>
             <td>${row.posible}</td>
             <td>${row.real}</td>
+            <td>${row.coincidencias}</td>
+            <td>${row.conteo}</td>
             <td style="color:${color}; font-weight:bold;">
                 ${valor.toFixed(0)}%
             </td>
