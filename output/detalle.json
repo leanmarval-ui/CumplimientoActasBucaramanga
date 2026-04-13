@@ -1,6 +1,6 @@
 [
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "AZAFRAN CDAD TIERRABUENA",
         "tipo": "Intermedia",
         "dia": "lunes",
@@ -11,7 +11,7 @@
         "cumplimiento": 1.0
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "AZAFRAN CDAD TIERRABUENA",
         "tipo": "Semanal",
         "dia": "LUNES",
@@ -22,7 +22,7 @@
         "cumplimiento": 1.0
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "COUNTRY WOODS",
         "tipo": "Intermedia",
         "dia": "MIERCOLES",
@@ -33,7 +33,7 @@
         "cumplimiento": 0.75
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "COUNTRY WOODS",
         "tipo": "Semanal",
         "dia": "MIERCOLES",
@@ -44,7 +44,7 @@
         "cumplimiento": 0.25
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "COUNTRY PARK",
         "tipo": "Intermedia",
         "dia": "MIERCOLES",
@@ -55,7 +55,7 @@
         "cumplimiento": 1.0
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "COUNTRY PARK",
         "tipo": "Semanal",
         "dia": "MIERCOLES",
@@ -66,7 +66,7 @@
         "cumplimiento": 0.25
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "SKY TOWER",
         "tipo": "Intermedia",
         "dia": "JUEVES",
@@ -77,7 +77,7 @@
         "cumplimiento": 0.5
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "SKY TOWER",
         "tipo": "Semanal",
         "dia": "JUEVES",
@@ -88,7 +88,7 @@
         "cumplimiento": 0.25
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "PANORAMIK",
         "tipo": "Intermedia",
         "dia": "MARTES",
@@ -99,7 +99,7 @@
         "cumplimiento": 1.0
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "PANORAMIK",
         "tipo": "Semanal",
         "dia": "MARTES",
@@ -110,7 +110,7 @@
         "cumplimiento": 1.0
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "ALCALA GRAN RESERVA",
         "tipo": "Intermedia",
         "dia": "MARTES",
@@ -121,7 +121,7 @@
         "cumplimiento": 1.0
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "ALCALA GRAN RESERVA",
         "tipo": "Semanal",
         "dia": "MIERCOLES",
@@ -132,7 +132,7 @@
         "cumplimiento": 0.75
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "PARQUE ORIENTE AURORA",
         "tipo": "Intermedia",
         "dia": "MARTES",
@@ -143,7 +143,7 @@
         "cumplimiento": 1.0
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "PARQUE ORIENTE AURORA",
         "tipo": "Semanal",
         "dia": "MARTES",
@@ -154,7 +154,7 @@
         "cumplimiento": 1.0
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "PARQUE ORIENTE SOLEIL",
         "tipo": "Intermedia",
         "dia": "MARTES",
@@ -165,7 +165,7 @@
         "cumplimiento": 1.0
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "PARQUE ORIENTE SOLEIL",
         "tipo": "Semanal",
         "dia": "MARTES",
@@ -176,7 +176,7 @@
         "cumplimiento": 0.75
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "TERRAZA DE MIRAFLORES",
         "tipo": "Intermedia",
         "dia": "MIERCOLES",
@@ -187,7 +187,7 @@
         "cumplimiento": 0.75
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "TERRAZA DE MIRAFLORES",
         "tipo": "Semanal",
         "dia": "MIERCOLES",
@@ -198,7 +198,7 @@
         "cumplimiento": 0.5
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "BOSQUES DEL HATO",
         "tipo": "Intermedia",
         "dia": "LUNES",
@@ -209,7 +209,7 @@
         "cumplimiento": 0.75
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "BOSQUES DEL HATO",
         "tipo": "Semanal",
         "dia": "LUNES",
@@ -220,7 +220,7 @@
         "cumplimiento": 0.75
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "PARQUE ORIENTE MONTEVISTA",
         "tipo": "Intermedia",
         "dia": "MARTES",
@@ -231,7 +231,7 @@
         "cumplimiento": 0.25
     },
     {
-        "sucursal": "BUCARAMANGA",
+        "sucursal": "bucaramanga",
         "proyecto": "PARQUE ORIENTE MONTEVISTA",
         "tipo": "Semanal",
         "dia": "MARTES",
