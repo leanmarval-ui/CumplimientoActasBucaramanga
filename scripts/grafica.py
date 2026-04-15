@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-import pandas as pd
 
 def generar_grafico(comparacion):
 
@@ -16,11 +15,6 @@ def generar_grafico(comparacion):
         df_grafico = df_grafico[
             df_grafico["Estado"].fillna("").str.upper() == "EJECUCIÓN"
         ]
-
-    # ⚠️ VALIDACIÓN (por si acaso)
-    if df_grafico.empty:
-        print("⚠️ No hay datos para graficar")
-        return
 
     # =========================
     # PASAR A %
@@ -61,12 +55,12 @@ def generar_grafico(comparacion):
     h = 0.32
 
     # =========================
-    # FIGURA (🔥 un poco más grande)
+    # FIGURA
     # =========================
-    fig, ax = plt.subplots(figsize=(14, max(6, len(proyectos)*0.6)))
+    fig, ax = plt.subplots(figsize=(13, max(6, len(proyectos)*0.6)))
 
     # =========================
-    # BARRAS
+    # BARRAS (SIN LABEL)
     # =========================
     bars1 = ax.barh(
         y - h/2,
@@ -143,7 +137,7 @@ def generar_grafico(comparacion):
         )
 
     # =========================
-    # META
+    # META (ÚNICA LEYENDA)
     # =========================
     ax.axvline(80, linestyle="--", linewidth=2, color="black", label="Meta 80%")
     ax.legend(["Meta 80%"])
@@ -162,13 +156,7 @@ def generar_grafico(comparacion):
     ax.set_xlim(0, max_val + 15)
 
     ax.set_xlabel("Cumplimiento (%)")
-
-    # 🔥🔥🔥 CLAVE: FORZAR CAMBIO DEL ARCHIVO
-    ax.set_title(
-        f"Cumplimiento de Reuniones por Proyecto\nActualizado: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}",
-        fontsize=14,
-        fontweight="bold"
-    )
+    ax.set_title("Cumplimiento de Reuniones por Proyecto", fontsize=14, fontweight="bold")
 
     ax.grid(axis="x", linestyle="--", alpha=0.4)
 
@@ -179,6 +167,7 @@ def generar_grafico(comparacion):
     # =========================
     os.makedirs("output", exist_ok=True)
     plt.savefig("output/grafico.png", dpi=300)
+
     plt.close()
 
-    print("Gráfico generado y actualizado correctamente ✅")
+    print("Gráfico generado correctamente")
