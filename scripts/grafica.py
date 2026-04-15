@@ -57,7 +57,7 @@ def generar_grafico(comparacion):
     # =========================
     # FIGURA
     # =========================
-    fig, ax = plt.subplots(figsize=(18, max(8, len(proyectos)*0.7)))
+    fig, ax = plt.subplots(figsize=(13, max(6, len(proyectos)*0.6)))
 
     # =========================
     # BARRAS (SIN LABEL)
